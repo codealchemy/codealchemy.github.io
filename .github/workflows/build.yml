@@ -1,0 +1,17 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.1
+    - name: 'Install gems.'
+      run: bundle install --jobs 4 --retry 3
+    - name: 'Build and test.'
+      run: bundle exec jekyll build && htmlproofer ./_site --only-4xx
